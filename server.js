@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
 
 const app = express();
 const PORT = 3000;
@@ -7,20 +8,39 @@ const PORT = 3000;
 // Middleware to read form data
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (HTML & CSS)
+// Session middleware
+app.use(session({
+  secret: 'mysecretkey',
+  resave: false,
+  saveUninitialized: true
+}));
+
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Handle form submission
-app.post('/submit', (req, res) => {
-  const { name, email } = req.body;
+// Fake user (for learning)
+const USER = {
+  email: "test@gmail.com",
+  password: "1234"
+};
 
-  console.log("Name:", name);
-  console.log("Email:", email);
+// Login route
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
 
-  res.send(`<h2>Thank you, ${name}!</h2><p>Your email: ${email}</p>`);
+  if (email === USER.email && password === USER.password) {
+    req.session.user = email;
+    res.redirect('/dashboard');
+  } else {
+    res.send('Invalid credentials');
+  }
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Auth middleware
+function isAuthenticated(req, res, next) {
+  if (req.session.user) {
+    next();
+  } else {
+    res.send('You must login first');
+  }
+}

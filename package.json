@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Kaweesi-Matia/contact-data-capture-app#readme",
   "dependencies": {
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "nodemon": "^3.1.14"
   }
 }

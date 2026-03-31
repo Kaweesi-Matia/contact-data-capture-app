@@ -1,15 +1,23 @@
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: #f4f4f4;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-  width: 300px;
-  margin: 100px auto;
-  padding: 20px;
+  width: 350px;
+  margin: 80px auto;
+  padding: 30px;
   background: white;
   border-radius: 10px;
   text-align: center;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
 }
 
 input {
@@ -17,6 +25,8 @@ input {
   width: 90%;
   margin: 10px auto;
   padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 button {
@@ -24,4 +34,27 @@ button {
   background: blue;
   color: white;
   border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: darkblue;
+}
+
+hr {
+  margin: 30px 0;
+  border: 0;
+  height: 1px;
+  background: #ccc;
+}
+
+a {
+  color: blue;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }

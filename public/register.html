@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Register</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
   <div class="container">
     <h2>Register</h2>
     <form action="/register" method="POST">
       <input type="email" name="email" placeholder="Enter email" required>
+
       <input type="password" name="password" placeholder="Enter password" required>
+
+      <!-- NEW FIELD -->
+      <input type="password" name="confirmPassword" placeholder="Confirm password" required>
+
       <button type="submit">Register</button>
     </form>
     <p>Already have an account? <a href="/login">Login here</a></p>
   </div>
 
 </body>
+
 </html>

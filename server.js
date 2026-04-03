@@ -71,25 +71,32 @@ app.get('/login', (req, res) => {
 /* ========= CREATE ========= */
 // Register user
 app.post('/register', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, confirmPassword } = req.body;
+
+  // ✅ CHECK IF PASSWORDS MATCH
+  if (password !== confirmPassword) {
+    return res.send('Passwords do not match <br><a href="/register">Try again</a>');
+  }
 
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
+
     if (existingUser) {
       return res.send('User already exists. <a href="/register">Try again</a>');
     }
 
-     // 🔐 HASH PASSWORD
+    // 🔐 HASH PASSWORD
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = new User({
       email,
       password: hashedPassword
     });
+
     await newUser.save();
 
-    // Redirect to login after successful registration
     res.redirect('/login');
+
   } catch (err) {
     res.send('Error registering user');
   }

@@ -100,9 +100,10 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email, password });
+   const user = await User.findOne({ email });
 
-  if (user) {
+  // 🔐 COMPARE PASSWORD
+  if (user && await bcrypt.compare(password, user.password)) {
     req.session.user = user.email;
     res.redirect('/dashboard');
   } else {

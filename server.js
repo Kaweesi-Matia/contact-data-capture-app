@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const PORT = 3000;
@@ -79,7 +80,12 @@ app.post('/register', async (req, res) => {
       return res.send('User already exists. <a href="/register">Try again</a>');
     }
 
-    const newUser = new User({ email, password });
+     // 🔐 HASH PASSWORD
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      email,
+      password: hashedPassword
+    });
     await newUser.save();
 
     // Redirect to login after successful registration
@@ -94,9 +100,10 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email, password });
+   const user = await User.findOne({ email });
 
-  if (user) {
+  // 🔐 COMPARE PASSWORD
+  if (user && await bcrypt.compare(password, user.password)) {
     req.session.user = user.email;
     res.redirect('/dashboard');
   } else {

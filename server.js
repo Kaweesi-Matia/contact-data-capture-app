@@ -80,7 +80,12 @@ app.post('/register', async (req, res) => {
       return res.send('User already exists. <a href="/register">Try again</a>');
     }
 
-    const newUser = new User({ email, password });
+     // 🔐 HASH PASSWORD
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      email,
+      password: hashedPassword
+    });
     await newUser.save();
 
     // Redirect to login after successful registration
